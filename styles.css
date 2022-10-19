@@ -17,52 +17,60 @@ body {
 
 .title {
   display: flex;
-  border: 4px solid white;
+  border: 4px solid darkolivegreen;
   grid-row: 1 / 2;
-  color: white;
+  color: darkolivegreen;
   font-size: 3rem;
+  font-weight: bold;
   justify-content: center;
   align-items: center;  
 
 }
 
 .main-content {
-  border: 4px solid white;
+  border: 4px solid darkolivegreen;
   grid-row: 2 / 3;
   display: grid;
   grid-template-rows: 4fr 1fr;
 }
 
 .gameboard {
-  border: 10px solid white;
+  border: 10px solid darkolivegreen;
   height: 400px;
   width: 400px;
-  align-self: center;
-  justify-self: center;
+  place-self: center;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
   padding: 10px;
 }
 
-.game-grid-1,
-.game-grid-4,
-.game-grid-7 {
-  border-right: 10px solid white;
+#game-grid-1,
+#game-grid-4,
+#game-grid-7 {
+  border-right: 10px solid darkolivegreen;
 
 }
 
-.game-grid-3,
-.game-grid-6,
-.game-grid-9 {
-  border-left: 10px solid white;
+#game-grid-3,
+#game-grid-6,
+#game-grid-9 {
+  border-left: 10px solid darkolivegreen;
 }
 
-.game-grid-1,
-.game-grid-2,
-.game-grid-3,
-.game-grid-4,
-.game-grid-5,
-.game-grid-6 {
-  border-bottom: 10px solid white;
+#game-grid-1,
+#game-grid-2,
+#game-grid-3,
+#game-grid-4,
+#game-grid-5,
+#game-grid-6 {
+  border-bottom: 10px solid darkolivegreen;
+}
+
+.game-grid {
+  color: darkolivegreen;
+  font-size: 3rem;
+  font-weight: bold;
+  display: grid;
+  place-items: center;
 }
