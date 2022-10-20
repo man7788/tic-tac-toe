@@ -20,10 +20,6 @@ const gameBoard = (() => {
     makeCheckObj();
     checkWinner();
   }
-  
-  // TMB = [012, 345, 678]
-  // LMR = [036, 147, 258]
-  // Two Diagonal = [048, 246]
   let checkObj = {};
   const makeCheckObj = () => {
     for (i = 0; i < boardGrid.length; i++) {
@@ -31,7 +27,7 @@ const gameBoard = (() => {
         checkObj[i] = boardGrid[i].textContent;
       }
     }
-  }
+  };
   const checkWinner = () => {
    switch (true) {
     case (checkObj[0] + checkObj[1] + checkObj[2] === 'XXX' ||
@@ -69,9 +65,8 @@ const gameBoard = (() => {
     case (Object.keys(checkObj).length === 9):
       console.log('draw');
       break;
+    }
   }
-}
-
   return { renderGrid, makeCheckObj, checkObj };
 })();
 

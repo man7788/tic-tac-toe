@@ -74,3 +74,17 @@ body {
   display: grid;
   place-items: center;
 }
+
+.controller-container,
+.player-input-container {
+  grid-row: 2 / 3;
+}
+
+/* .controller-container {
+  grid-row: 3 / 4;
+} */
+
+.controller-container,
+.player-input-container {
+  grid-column: 1 / 2;
+} 
