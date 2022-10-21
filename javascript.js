@@ -33,6 +33,7 @@ const gameBoard = (() => {
     case (checkObj[0] + checkObj[1] + checkObj[2] === 'XXX' ||
       checkObj[0] + checkObj[1] + checkObj[2] === 'OOO' ):
       console.log('yes');
+      displayWinner();
       break;
     case (checkObj[3] + checkObj[4] + checkObj[5] === 'XXX' ||
       checkObj[3] + checkObj[4] + checkObj[5] === 'OOO' ):
@@ -67,11 +68,32 @@ const gameBoard = (() => {
       break;
     }
   }
+  const displayWinner = () => {
+    const winnerTitle = document.createElement('div');
+    winnerTitle.textContent = 'Winner';
+    document.querySelector('.winner-container').appendChild(winnerTitle);
+    for (i = 0; i < boardGrid.length; i++) {
+      boardGrid[i].removeEventListener('click', displayGrid);
+    }
+  }
+
+  const startButton = document.querySelector('.start');
+  const restartButton = document.querySelector('.restart');
+  const restartGame = () => {
+    for (i = 0; i < boardGrid.length; i++) {
+      boardGrid[i].replaceChildren();
+    }
+    renderGrid();
+    checkObj = {};
+    testObj = { check: 'O'};
+    document.querySelector('.winner-container').replaceChildren();
+  }
+  restartButton.addEventListener('click', restartGame);
   return { renderGrid, makeCheckObj, checkObj };
 })();
 
 // const displayController = (() => {
-
+  
 // })();
 
 // const playerFactory = (playerName) => {
