@@ -13,15 +13,19 @@
     <div class="title">Tic Tac Toe</div>
     <div class="main-content">
       <div class="gameboard">
-        <div class="game-grid" id="game-grid-0"></div>
-        <div class="game-grid" id="game-grid-1"></div>
-        <div class="game-grid" id="game-grid-2"></div>
-        <div class="game-grid" id="game-grid-3"></div>
-        <div class="game-grid" id="game-grid-4"></div>
-        <div class="game-grid" id="game-grid-5"></div>
-        <div class="game-grid" id="game-grid-6"></div>
-        <div class="game-grid" id="game-grid-7"></div>
-        <div class="game-grid" id="game-grid-8"></div>
+  
+          <div class="grid-container" style="display: none;">
+            <div class="game-grid" id="game-grid-0"></div>
+            <div class="game-grid" id="game-grid-1"></div>
+            <div class="game-grid" id="game-grid-2"></div>
+            <div class="game-grid" id="game-grid-3"></div>
+            <div class="game-grid" id="game-grid-4"></div>
+            <div class="game-grid" id="game-grid-5"></div>
+            <div class="game-grid" id="game-grid-6"></div>
+            <div class="game-grid" id="game-grid-7"></div>
+            <div class="game-grid" id="game-grid-8"></div>
+          </div>
+
       </div>
       <div class="display-panel">
         <div class="player1-name">Player 1:</div>
@@ -30,12 +34,12 @@
       </div>
       <div class="player-input-container">
         <form action="">
-          <input type="text">
-          <button type="button">Add Player 1 Name</button>
+          <input class="player1-name-input" type="text">
+          <button class="player1-button" type="submit">Add Player 1 Name</button>
         </form>
         <form action="">
-          <input type="text">
-          <button type="button">Add Player 2 Name</button>
+          <input class="player2-name-input" type="text">
+          <button class="player2-button" type="submit">Add Player 2 Name</button>
         </form>
         <button class="start">Start</button>
         <button class="restart">Restart</button>

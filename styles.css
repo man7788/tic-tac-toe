@@ -39,11 +39,14 @@ body {
   border: 10px solid darkolivegreen;
   height: 400px;
   width: 400px;
-  place-self: center;
+  padding: 10px;
+  display: grid;
+}
+
+.grid-container {
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
-  padding: 10px;
 }
 
 #game-grid-0,
