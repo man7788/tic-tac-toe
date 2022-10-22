@@ -5,9 +5,10 @@ const gameBoard = (() => {
       boardGrid[i].addEventListener('click', displayGrid);
     }
   }
-  let checkObj = {};
 
+  let checkObj = {};
   let testObj = { check: 'O'};
+
   const displayGrid = (e) => {
     gridNum = e.target.id.slice(-1);
     if (testObj.check === 'O') {
@@ -48,6 +49,15 @@ const displayController = (() => {
 })();
 
 const checkFunction = (() => {
+  let winnterText;
+  const findText = () => {
+    if (gameBoard.testObj['check'] === 'X') {
+      winnterText = 'Player 1 Wins!'
+    } else {
+      winnterText = 'Player 2 Wins!'
+    }
+    displayPanel.displayWinner(winnterText);
+  };
   const makeCheckObj = () => {
     for (i = 0; i < gameBoard.boardGrid.length; i++) {
       if (gameBoard.boardGrid[i].textContent !== '') {
@@ -56,51 +66,44 @@ const checkFunction = (() => {
     }
   };
   const checkWinner = () => {
+    const target = gameBoard.checkObj;
     switch (true) {
-     case (gameBoard.checkObj[0] + gameBoard.checkObj[1] + gameBoard.checkObj[2] === 'XXX' ||
-       gameBoard.checkObj[0] + gameBoard.checkObj[1] + gameBoard.checkObj[2] === 'OOO' ):
-       console.log('yes');
-      displayPanel.displayWinner('Winner!');
-       break;
-     case (gameBoard.checkObj[3] + gameBoard.checkObj[4] + gameBoard.checkObj[5] === 'XXX' ||
-       gameBoard.checkObj[3] + gameBoard.checkObj[4] + gameBoard.checkObj[5] === 'OOO' ):
-      displayPanel.displayWinner('Winner!');
-       console.log('yes');
-       break;
-     case (gameBoard.checkObj[6] + gameBoard.checkObj[7] + gameBoard.checkObj[8] === 'XXX' ||
-       gameBoard.checkObj[6] + gameBoard.checkObj[7] + gameBoard.checkObj[8] === 'OOO' ):
-      displayPanel.displayWinner('Winner!');
-       console.log('yes');
-       break;
-     case (gameBoard.checkObj[0] + gameBoard.checkObj[3] + gameBoard.checkObj[6] === 'XXX' ||
-       gameBoard.checkObj[0] + gameBoard.checkObj[3] + gameBoard.checkObj[6] === 'OOO' ):
-       console.log('yes');
-       break;
-     case (gameBoard.checkObj[1] + gameBoard.checkObj[4] + gameBoard.checkObj[7] === 'XXX' ||
-       gameBoard.checkObj[1] + gameBoard.checkObj[4] + gameBoard.checkObj[7] === 'OOO' ):
-      displayPanel.displayWinner('Winner!');
-       console.log('yes');
-       break;
-     case (gameBoard.checkObj[2] + gameBoard.checkObj[5] + gameBoard.checkObj[8] === 'XXX' ||
-       gameBoard.checkObj[2] + gameBoard.checkObj[5] + gameBoard.checkObj[8] === 'OOO' ):
-      displayPanel.displayWinner('Winner!');
-       console.log('yes');
-       break;
-     case (gameBoard.checkObj[0] + gameBoard.checkObj[4] + gameBoard.checkObj[8] === 'XXX' ||
-       gameBoard.checkObj[0] + gameBoard.checkObj[4] + gameBoard.checkObj[8] === 'OOO' ):
-      displayPanel.displayWinner('Winner!');
-       console.log('yes');
-       break;
-     case (gameBoard.checkObj[2] + gameBoard.checkObj[4] + gameBoard.checkObj[6] === 'XXX' ||
-       gameBoard.checkObj[2] + gameBoard.checkObj[4] + gameBoard.checkObj[6] === 'OOO' ):
-       displayPanel.displayWinner('Winner!');
-       console.log('yes');
-       break;
-     case (Object.keys(gameBoard.checkObj).length === 9):
-       console.log('draw');
-       displayPanel.displayWinner('Draw!');
-       break;
-     }
+      case (target[0] + target[1] + target[2] === 'XXX' ||
+        target[0] + target[1] + target[2] === 'OOO' ):
+        findText();
+        break;
+      case (target[3] + target[4] + target[5] === 'XXX' ||
+        target[3] + target[4] + target[5] === 'OOO' ):
+        findText();
+        break;
+      case (target[6] + target[7] + target[8] === 'XXX' ||
+        target[6] + target[7] + target[8] === 'OOO' ):
+        findText();
+        break;
+      case (target[0] + target[3] + target[6] === 'XXX' ||
+        target[0] + target[3] + target[6] === 'OOO' ):
+        findText();
+        break;
+      case (target[1] + target[4] + target[7] === 'XXX' ||
+        target[1] + target[4] + target[7] === 'OOO' ):
+        findText();
+        break;
+      case (target[2] + target[5] + target[8] === 'XXX' ||
+        target[2] + target[5] + target[8] === 'OOO' ):
+        findText();
+        break;
+      case (target[0] + target[4] + target[8] === 'XXX' ||
+        target[0] + target[4] + target[8] === 'OOO' ):
+        findText();
+        break;
+      case (target[2] + target[4] + target[6] === 'XXX' ||
+        target[2] + target[4] + target[6] === 'OOO' ):
+        findText();
+        break;
+      case (Object.keys(target).length === 9):
+        displayPanel.displayWinner('Draw!');
+        break;
+      }
    }
   return { makeCheckObj, checkWinner };
 })();
@@ -127,18 +130,17 @@ const playerInput = (() => {
   addButton1.addEventListener('click', (e) => {
     e.preventDefault();
     const inputName1 = document.querySelector('.player1-name-input');
-    document.querySelector('.player1-name').textContent = 'Player 1: ' + inputName1.value;
+    document.querySelector('.player1-name').textContent = '(X)Player 1: ' + inputName1.value;
     inputName1.value = '';
   });
   addButton2.addEventListener('click', (e) => {
     e.preventDefault();
     const inputName2 = document.querySelector('.player2-name-input');
-    document.querySelector('.player2-name').textContent = 'Player 2: ' +inputName2.value;
+    document.querySelector('.player2-name').textContent = '(O)Player 2: ' +inputName2.value;
     inputName2.value = '';
   });
-  // let playersObj = playerFactory(inputName1, inputName2);
-  // return { playersObj }
 })();
+
 
 
 
