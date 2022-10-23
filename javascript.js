@@ -44,19 +44,21 @@ const displayController = (() => {
     gameBoard.checkObj = {};
     gameBoard.testObj['check'] = 'O';
     document.querySelector('.winner-container').replaceChildren();
+    computerLogic.occupiedList.length = 0;
+    computerLogic.startComputerTurn();
   }
   restartButton.addEventListener('click', restartGame);
 })();
 
 const checkFunction = (() => {
-  let winnterText;
+  let winnerText;
   const findText = () => {
     if (gameBoard.testObj['check'] === 'X') {
-      winnterText = 'Player 1 Wins!'
+      winnerText = 'Player 1 Wins!'
     } else {
-      winnterText = 'Player 2 Wins!'
+      winnerText = 'Player 2 Wins!'
     }
-    displayPanel.displayWinner(winnterText);
+    displayPanel.displayWinner(winnerText);
   };
   const makeCheckObj = () => {
     for (i = 0; i < gameBoard.boardGrid.length; i++) {
@@ -103,6 +105,7 @@ const checkFunction = (() => {
       case (Object.keys(target).length === 9):
         displayPanel.displayWinner('Draw!');
         break;
+      default: computerLogic.computerTurn();
       }
    }
   return { makeCheckObj, checkWinner };
@@ -116,30 +119,101 @@ const displayPanel = (() => {
     for (i = 0; i < gameBoard.boardGrid.length; i++) {
       gameBoard.boardGrid[i].removeEventListener('click', gameBoard.displayGrid);
     }
+    computerLogic.stopComputerTurn();
   }
   return { displayWinner }
 })();
 
-const playerFactory = (playerName1, playerName2) => {
-  return { playerName1, playerName2 };
-};
-
 const playerInput = (() => {
+  const playerName1 = document.querySelector('.player1-name');
+  const playerName2 = document.querySelector('.player2-name');
   const addButton1 = document.querySelector('.player1-button');
   const addButton2 = document.querySelector('.player2-button');
+  const inputName1 = document.querySelector('.player1-name-input');
+  const inputName2 = document.querySelector('.player2-name-input');
   addButton1.addEventListener('click', (e) => {
     e.preventDefault();
-    const inputName1 = document.querySelector('.player1-name-input');
-    document.querySelector('.player1-name').textContent = '(X)Player 1: ' + inputName1.value;
+    playerName1.textContent += ` ${inputName1.value}`;
     inputName1.value = '';
   });
   addButton2.addEventListener('click', (e) => {
     e.preventDefault();
-    const inputName2 = document.querySelector('.player2-name-input');
-    document.querySelector('.player2-name').textContent = '(O)Player 2: ' +inputName2.value;
+    playerName2.textContent += ` ${inputName2.value}`;
     inputName2.value = '';
   });
 })();
+
+const getRandomInt = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  const randomInt = Math.floor(Math.random() * (max - min) + min);
+  return { randomInt };
+}
+
+const computerLogic = (() => {
+  let board = gameBoard.boardGrid;
+
+  const randomNumber = () => {
+    let computerNumber = getRandomInt(0, 9);
+    computerNumber = computerNumber.randomInt;
+    computerNumber = computerNumber.toString();
+    console.log(computerNumber);
+    return computerNumber;
+  };
+
+  let occupiedList = [];
+
+  const occupiedGrid = (e) => {
+    let occupiedNum = e.target.id.slice(-1);
+    occupiedList.push(occupiedNum);
+    board[occupiedNum].removeEventListener('click', occupiedGrid);
+  };
+  
+  const computerTurn = () => {
+    let numberToPut = randomNumber();
+    let safetyBreak = 0;
+    while (occupiedList.includes(numberToPut) && safetyBreak < 100) {
+        numberToPut = randomNumber();
+        safetyBreak++
+      } 
+    board[numberToPut].textContent = 'O';
+    occupiedList.push(numberToPut);
+    board[numberToPut].removeEventListener('click', occupiedGrid);
+    board[numberToPut].removeEventListener('click', gameBoard.displayGrid);
+    gameBoard.testObj['check'] = 'O';
+  };
+
+  for (i = 0; i < board.length; i++) {
+    board[i].addEventListener('click', occupiedGrid);
+  }
+
+  const startComputerTurn = () => {
+    for (i = 0; i < board.length; i++) {
+      board[i].addEventListener('click', occupiedGrid);
+    }
+  };
+
+  const stopComputerTurn = () => {
+    for (i = 0; i < board.length; i++) {
+      board[i].removeEventListener('click', occupiedGrid);
+    }
+  };
+
+  return { occupiedList, computerTurn, startComputerTurn, stopComputerTurn};
+})();
+
+console.log(computerLogic.occupiedList);
+
+// const randomNumber = () => {
+//   let computerNumber = getRandomInt(0, 10);
+//   computerNumber = computerNumber.randomInt;
+//   computerNumber = computerNumber.toString();
+//   return computerNumber;
+// };
+
+// console.log(randomNumber());
+
+
 
 
 
