@@ -1,3 +1,8 @@
+// Event listerner still not removed after computer 'O' move 
+
+
+
+
 const gameBoard = (() => {
   const boardGrid = document.querySelectorAll('.game-grid');
   const renderGrid = () => {
@@ -52,13 +57,26 @@ const displayController = (() => {
     gameBoard.testObj['check'] = 'O';
     document.querySelector('.winner-container').replaceChildren();
     computerLogic.occupiedList.length = 0;
-    checkFunction.turnOffComputer['check'] = false;
+    checkFunction.turnOffComputer['check'] = true;
+    playerInput.playerName1.textContent = '(X)Player 1: ';
+    playerInput.playerName2.textContent = '(O)Player 2: ';
   }
   restartButton.addEventListener('click', restartGame);
+
+  const computerplayer2 = document.querySelector('.computer-button');
+  const addcomputerplayer2 = () => {
+    if (Object.keys(gameBoard.checkObj).length > 0) {
+      alert('Cannot add computer move after game started.');
+      return;
+    }
+    computerLogic.startComputerTurn();
+    checkFunction.turnOffComputer['check'] = false;
+  };
+  computerplayer2.addEventListener('click', addcomputerplayer2);
 })();
 
 const checkFunction = (() => {
-  let turnOffComputer = { check: false };
+  let turnOffComputer = { check: true };
   let winnerText;
   const findText = () => {
     turnOffComputer['check'] = true;
@@ -141,16 +159,27 @@ const playerInput = (() => {
   const addButton2 = document.querySelector('.player2-button');
   const inputName1 = document.querySelector('.player1-name-input');
   const inputName2 = document.querySelector('.player2-name-input');
+  const computerplayer2 = document.querySelector('.computer-button');
+
   addButton1.addEventListener('click', (e) => {
     e.preventDefault();
-    playerName1.textContent += ` ${inputName1.value}`;
+    playerName1.textContent = `(X)Player 1: ${inputName1.value}`;
     inputName1.value = '';
   });
-  addButton2.addEventListener('click', (e) => {
+  const addplayer2 = (e) => {
     e.preventDefault();
-    playerName2.textContent += ` ${inputName2.value}`;
+    playerName2.textContent = `(O)Player 2: ${inputName2.value}`;
     inputName2.value = '';
+  };
+  addButton2.addEventListener('click', addplayer2);
+
+  computerplayer2.addEventListener('click', (e) => {
+    e.preventDefault();
+    playerName2.textContent = `(O)Player 2: Computer`;
+    inputName2.value = '';
+    addButton2.removeEventListener('click', addplayer2);
   });
+  return { playerName1, playerName2 }
 })();
 
 const getRandomInt = (min, max) => {
@@ -198,9 +227,9 @@ const computerLogic = (() => {
     }
   };
 
-  for (i = 0; i < board.length; i++) {
-    board[i].addEventListener('click', occupiedGrid);
-  }
+  // for (i = 0; i < board.length; i++) {
+  //   board[i].addEventListener('click', occupiedGrid);
+  // }
 
   const startComputerTurn = () => {
     for (i = 0; i < board.length; i++) {
