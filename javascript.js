@@ -13,14 +13,20 @@ const gameBoard = (() => {
     gridNum = e.target.id.slice(-1);
     if (testObj.check === 'O') {
       boardGrid[gridNum].textContent = 'X';
+      console.log(`fired X ${gridNum}`)
       testObj.check = 'X';
       } else {
         boardGrid[gridNum].textContent = 'O';
         testObj.check = 'O';
+        console.log(`fired O ${gridNum}`)
+
       }
     boardGrid[gridNum].removeEventListener('click', displayGrid);
     checkFunction.makeCheckObj();
     checkFunction.checkWinner();
+    if (!checkFunction.turnOffComputer['check'] === true) {
+      computerLogic.computerTurn();
+    }
   }
   return { renderGrid, boardGrid, displayGrid, checkObj, testObj };
 })();
@@ -40,19 +46,22 @@ const displayController = (() => {
     for (i = 0; i < gameBoard.boardGrid.length; i++) {
       gameBoard.boardGrid[i].replaceChildren();
     }
+    computerLogic.startComputerTurn();
     gameBoard.renderGrid();
     gameBoard.checkObj = {};
     gameBoard.testObj['check'] = 'O';
     document.querySelector('.winner-container').replaceChildren();
     computerLogic.occupiedList.length = 0;
-    computerLogic.startComputerTurn();
+    checkFunction.turnOffComputer['check'] = false;
   }
   restartButton.addEventListener('click', restartGame);
 })();
 
 const checkFunction = (() => {
+  let turnOffComputer = { check: false };
   let winnerText;
   const findText = () => {
+    turnOffComputer['check'] = true;
     if (gameBoard.testObj['check'] === 'X') {
       winnerText = 'Player 1 Wins!'
     } else {
@@ -67,6 +76,7 @@ const checkFunction = (() => {
       }
     }
   };
+
   const checkWinner = () => {
     const target = gameBoard.checkObj;
     switch (true) {
@@ -104,11 +114,11 @@ const checkFunction = (() => {
         break;
       case (Object.keys(target).length === 9):
         displayPanel.displayWinner('Draw!');
+        turnOffComputer['check'] = true;
         break;
-      default: computerLogic.computerTurn();
       }
    }
-  return { makeCheckObj, checkWinner };
+  return { makeCheckObj, checkWinner, turnOffComputer };
 })();
  
 const displayPanel = (() => {
@@ -157,7 +167,6 @@ const computerLogic = (() => {
     let computerNumber = getRandomInt(0, 9);
     computerNumber = computerNumber.randomInt;
     computerNumber = computerNumber.toString();
-    console.log(computerNumber);
     return computerNumber;
   };
 
@@ -167,6 +176,7 @@ const computerLogic = (() => {
     let occupiedNum = e.target.id.slice(-1);
     occupiedList.push(occupiedNum);
     board[occupiedNum].removeEventListener('click', occupiedGrid);
+    console.log('occupied ' + occupiedNum);
   };
   
   const computerTurn = () => {
@@ -176,11 +186,16 @@ const computerLogic = (() => {
         numberToPut = randomNumber();
         safetyBreak++
       } 
+    console.log(numberToPut);
     board[numberToPut].textContent = 'O';
     occupiedList.push(numberToPut);
     board[numberToPut].removeEventListener('click', occupiedGrid);
-    board[numberToPut].removeEventListener('click', gameBoard.displayGrid);
+    // board[numberToPut].removeEventListener('click', gameBoard.displayGrid);
     gameBoard.testObj['check'] = 'O';
+    if (!checkFunction.turnOffComputer['check'] === true) {
+    checkFunction.makeCheckObj();
+    checkFunction.checkWinner();
+    }
   };
 
   for (i = 0; i < board.length; i++) {
