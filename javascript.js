@@ -1,8 +1,5 @@
 // Event listerner still not removed after computer 'O' move 
 
-
-
-
 const gameBoard = (() => {
   const boardGrid = document.querySelectorAll('.game-grid');
   const renderGrid = () => {
@@ -166,19 +163,26 @@ const playerInput = (() => {
     playerName1.textContent = `(X)Player 1: ${inputName1.value}`;
     inputName1.value = '';
   });
+
   const addplayer2 = (e) => {
     e.preventDefault();
     playerName2.textContent = `(O)Player 2: ${inputName2.value}`;
     inputName2.value = '';
   };
   addButton2.addEventListener('click', addplayer2);
-
-  computerplayer2.addEventListener('click', (e) => {
+  
+  const addplayer2Computer = (e) => {
+    if (Object.keys(gameBoard.checkObj).length > 0) {
+      return;
+    }
     e.preventDefault();
     playerName2.textContent = `(O)Player 2: Computer`;
     inputName2.value = '';
     addButton2.removeEventListener('click', addplayer2);
-  });
+  };
+ 
+  computerplayer2.addEventListener('click', addplayer2Computer);
+
   return { playerName1, playerName2 }
 })();
 
@@ -219,7 +223,7 @@ const computerLogic = (() => {
     board[numberToPut].textContent = 'O';
     occupiedList.push(numberToPut);
     board[numberToPut].removeEventListener('click', occupiedGrid);
-    // board[numberToPut].removeEventListener('click', gameBoard.displayGrid);
+    board[numberToPut].removeEventListener('click', gameBoard.displayGrid);
     gameBoard.testObj['check'] = 'O';
     if (!checkFunction.turnOffComputer['check'] === true) {
     checkFunction.makeCheckObj();
@@ -248,14 +252,6 @@ const computerLogic = (() => {
 
 console.log(computerLogic.occupiedList);
 
-// const randomNumber = () => {
-//   let computerNumber = getRandomInt(0, 10);
-//   computerNumber = computerNumber.randomInt;
-//   computerNumber = computerNumber.toString();
-//   return computerNumber;
-// };
-
-// console.log(randomNumber());
 
 
 
