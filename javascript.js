@@ -78,9 +78,9 @@ const checkFunction = (() => {
   const findText = () => {
     turnOffComputer['check'] = true;
     if (gameBoard.testObj['check'] === 'X') {
-      winnerText = 'Player 1 Wins!'
+      winnerText = 'Player 1 Wins!';
     } else {
-      winnerText = 'Player 2 Wins!'
+      winnerText = 'Player 2 Wins!';
     }
     displayPanel.displayWinner(winnerText);
   };
@@ -91,48 +91,79 @@ const checkFunction = (() => {
       }
     }
   };
-
+  
   const checkWinner = () => {
     const target = gameBoard.checkObj;
-    switch (true) {
-      case (target[0] + target[1] + target[2] === 'XXX' ||
-        target[0] + target[1] + target[2] === 'OOO' ):
+    let streak = {
+      0: '0-1-2',
+      1: '3-4-5',
+      2: '6-7-8',
+      3: '0-3-6',
+      4: '1-4-7',
+      5: '2-5-8',
+      6: '0-4-8',
+      7: '2-4-6',
+    };
+    for (let key in streak) {
+      num = streak[key].split('-')
+      let zero = num[0]
+      let one = num[1]
+      let two = num[2]
+      if (target[zero] + target[one] + target[two] === 'XXX' ||
+        target[zero] + target[one] + target[two] === 'OOO') {
         findText();
-        break;
-      case (target[3] + target[4] + target[5] === 'XXX' ||
-        target[3] + target[4] + target[5] === 'OOO' ):
-        findText();
-        break;
-      case (target[6] + target[7] + target[8] === 'XXX' ||
-        target[6] + target[7] + target[8] === 'OOO' ):
-        findText();
-        break;
-      case (target[0] + target[3] + target[6] === 'XXX' ||
-        target[0] + target[3] + target[6] === 'OOO' ):
-        findText();
-        break;
-      case (target[1] + target[4] + target[7] === 'XXX' ||
-        target[1] + target[4] + target[7] === 'OOO' ):
-        findText();
-        break;
-      case (target[2] + target[5] + target[8] === 'XXX' ||
-        target[2] + target[5] + target[8] === 'OOO' ):
-        findText();
-        break;
-      case (target[0] + target[4] + target[8] === 'XXX' ||
-        target[0] + target[4] + target[8] === 'OOO' ):
-        findText();
-        break;
-      case (target[2] + target[4] + target[6] === 'XXX' ||
-        target[2] + target[4] + target[6] === 'OOO' ):
-        findText();
-        break;
-      case (Object.keys(target).length === 9):
-        displayPanel.displayWinner('Draw!');
-        turnOffComputer['check'] = true;
-        break;
+        return;
       }
-   }
+    }
+    if (Object.keys(target).length === 9) {
+      displayPanel.displayWinner('Draw!');
+      turnOffComputer['check'] = true;
+    }
+  };
+
+
+
+  // const checkWinner = () => {
+  //   const target = gameBoard.checkObj;
+  //   switch (true) {
+  //     case (target[0] + target[1] + target[2] === 'XXX' ||
+  //       target[0] + target[1] + target[2] === 'OOO' ):
+  //       findText();
+  //       break;
+  //     case (target[3] + target[4] + target[5] === 'XXX' ||
+  //       target[3] + target[4] + target[5] === 'OOO' ):
+  //       findText();
+  //       break;
+  //     case (target[6] + target[7] + target[8] === 'XXX' ||
+  //       target[6] + target[7] + target[8] === 'OOO' ):
+  //       findText();
+  //       break;
+  //     case (target[0] + target[3] + target[6] === 'XXX' ||
+  //       target[0] + target[3] + target[6] === 'OOO' ):
+  //       findText();
+  //       break;
+  //     case (target[1] + target[4] + target[7] === 'XXX' ||
+  //       target[1] + target[4] + target[7] === 'OOO' ):
+  //       findText();
+  //       break;
+  //     case (target[2] + target[5] + target[8] === 'XXX' ||
+  //       target[2] + target[5] + target[8] === 'OOO' ):
+  //       findText();
+  //       break;
+  //     case (target[0] + target[4] + target[8] === 'XXX' ||
+  //       target[0] + target[4] + target[8] === 'OOO' ):
+  //       findText();
+  //       break;
+  //     case (target[2] + target[4] + target[6] === 'XXX' ||
+  //       target[2] + target[4] + target[6] === 'OOO' ):
+  //       findText();
+  //       break;
+  //     case (Object.keys(target).length === 9):
+  //       displayPanel.displayWinner('Draw!');
+  //       turnOffComputer['check'] = true;
+  //       break;
+  //     }
+  //  };
   return { makeCheckObj, checkWinner, turnOffComputer };
 })();
  
@@ -250,9 +281,7 @@ const computerLogic = (() => {
   return { occupiedList, computerTurn, startComputerTurn, stopComputerTurn};
 })();
 
-console.log(computerLogic.occupiedList);
-
-
+console.log(checkFunction.checkWinner());
 
 
 
